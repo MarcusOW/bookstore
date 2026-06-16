@@ -8,13 +8,15 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "django (>=6.0.6,<7.0.0)",
-    "djangorestframework (>=3.17.1,<4.0.0)"
+    "djangorestframework (>=3.17.1,<4.0.0)",
+    "django-rest-framework (>=0.1.0,<0.2.0)"
 ]
 
 [dependency-groups]
 dev = [
     "pytest (>=9.1.0,<10.0.0)",
-    "factory-boy (>=3.3.3,<4.0.0)"
+    "factory-boy (>=3.3.3,<4.0.0)",
+    "pytest-django (>=4.12.0,<5.0.0)"
 ]
 
 
