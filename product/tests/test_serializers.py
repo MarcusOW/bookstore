@@ -91,10 +91,11 @@ class TestProductSerializer:
         cat2 = CategoryFactory()
         product = ProductFactory(category=[cat1, cat2])
         serializer = ProductSerializer(product)
-        categories_ids = serializer.data['category']
-        assert len(categories_ids) == 2
-        assert cat1.id in categories_ids
-        assert cat2.id in categories_ids
+        categories_data = serializer.data['category']
+        assert len(categories_data) == 2
+        titles = [cat['title'] for cat in categories_data]
+        assert cat1.title in titles
+        assert cat2.title in titles
 
     def test_deserialize_valid_data(self):
         category = CategoryFactory()
@@ -103,7 +104,7 @@ class TestProductSerializer:
             'price': 50,
             'description': 'Mouse óptico',
             'active': True,
-            'category': [category.id]
+            'categories_id': [category.id]
         }
         serializer = ProductSerializer(data=data)
         assert serializer.is_valid(), serializer.errors
@@ -117,12 +118,12 @@ class TestProductSerializer:
         data = {
             'title': 'Teclado',
             'price': '120.00',
-            'category': []
+            'categories_id': []
         }
         serializer = ProductSerializer(data=data)
-        assert serializer.is_valid(), serializer.errors
-        product = serializer.save()
-        assert product.category.count() == 0
+        assert not serializer.is_valid()
+        assert 'categories_id' in serializer.errors
+        assert serializer.errors['categories_id'][0] == 'This list may not be empty.'
 
     def test_price_must_be_positive(self):
         data = {'title': 'Produto', 'price': '-10.00', 'category': []}
@@ -140,10 +141,11 @@ class TestProductSerializer:
         data = {'title': 'Produto', 'price': '10.00'}
         serializer = ProductSerializer(data=data)
         assert not serializer.is_valid()
-        assert 'category' in serializer.errors
+        assert 'categories_id' in serializer.errors
 
     def test_active_default_true(self):
-        data = {'title': 'Produto', 'price': '10.00', 'category': []}
+        category = CategoryFactory()
+        data = {'title': 'Produto', 'price': '10.00', 'categories_id': [category.id]}
         serializer = ProductSerializer(data=data)
         assert serializer.is_valid(), serializer.errors
         product = serializer.save()

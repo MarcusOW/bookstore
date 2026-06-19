@@ -23,7 +23,7 @@ class TestOrderSerializer:
         product = ProductFactory()
         data = {
             'user': user.id,
-            'product': [product.id]
+            'products_ids': [product.id]
         }
         serializer = OrderSerializer(data=data)
         assert serializer.is_valid(), serializer.errors
@@ -38,15 +38,15 @@ class TestOrderSerializer:
 
     def test_product_required(self):
         user = UserFactory()
-        data = {'user': user.id, 'product': []}
+        data = {'user': user.id, 'products_ids': []}
         serializer = OrderSerializer(data=data)
         # blank=False no modelo, mas serializer com required=True deve rejeitar lista vazia
         assert not serializer.is_valid()
-        assert 'product' in serializer.errors
+        assert 'products_ids' in serializer.errors
 
     def test_product_must_exist(self):
         user = UserFactory()
-        data = {'user': user.id, 'product': [9999]}
+        data = {'user': user.id, 'products_ids': [9999]}
         serializer = OrderSerializer(data=data)
         assert not serializer.is_valid()
-        assert 'product' in serializer.errors
+        assert 'products_ids' in serializer.errors
