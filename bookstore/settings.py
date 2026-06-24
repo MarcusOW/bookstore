@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'order',
     'product',
     'debug_toolbar',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -124,9 +125,15 @@ STATIC_URL = 'static/'
 
 REST_FRAMEWORK = {
   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+  'DEFAULT_AUTHENTICATION_CLASSES': [
+    'rest_framework.authentication.BasicAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.TokenAuthentication',
+  ],
   'PAGE_SIZE': 10
 }
 
 INTERNAL_IPS = [
   '127.0.0.1',
 ]
+
