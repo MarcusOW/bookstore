@@ -11,6 +11,7 @@ class CategoryFactory(factory.django.DjangoModelFactory):
 
   class Meta:
     model = Category
+    skip_postgeneration_save = True
 
 class ProductFactory(factory.django.DjangoModelFactory):
   price = factory.Faker('pyint')
@@ -28,3 +29,4 @@ class ProductFactory(factory.django.DjangoModelFactory):
 
   class Meta:
     model = Product
+    skip_postgeneration_save = True
