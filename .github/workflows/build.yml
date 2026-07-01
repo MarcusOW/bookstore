@@ -12,6 +12,21 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: bookstore_dev
+          POSTGRES_PASSWORD: bookstore_dev
+          POSTGRES_DB: bookstore_dev_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v6
 
@@ -25,12 +40,9 @@ jobs:
           python -m ensurepip
           python -m pip install --upgrade pip
           python -m pip install poetry==${{ matrix.poetry-version }}
-      - name: View poetry --help
-        run: poetry --help
 
       - name: Install dependencies
-        shell: bash
-        run: python -m poetry install
+        run: poetry install
 
       - name: Test
         env:
