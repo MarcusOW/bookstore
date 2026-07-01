@@ -1,11 +1,9 @@
 import pytest
 from django.db import IntegrityError
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
-from product.models.product import Product
 from order.models import Order
 from order.factories import OrderFactory, UserFactory
 from product.factories import ProductFactory
+
 
 @pytest.mark.django_db
 class TestOrder:
